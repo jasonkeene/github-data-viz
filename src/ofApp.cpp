@@ -5,18 +5,41 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     // create mock language nodes
-    LanguageNode python("Python", 200, 200, 35);
-    LanguageNode lua("Lua", 400, 178, 10);
-    LanguageNode go("Go", 370, 289, 15);
+    vector<LanguageNode *> mock_languages;
+    mock_languages.push_back(new LanguageNode("Python", rand() % (ofGetWindowWidth()-200) + 100, rand() % (ofGetWindowHeight()-200) + 100, rand() % 40 + 10));
+    mock_languages.push_back(new LanguageNode("Lua", rand() % (ofGetWindowWidth()-200) + 100, rand() % (ofGetWindowHeight()-200) + 100, rand() % 40 + 10));
+    mock_languages.push_back(new LanguageNode("Go", rand() % (ofGetWindowWidth()-200) + 100, rand() % (ofGetWindowHeight()-200) + 100, rand() % 40 + 10));
+    mock_languages.push_back(new LanguageNode("Haskell", rand() % (ofGetWindowWidth()-200) + 100, rand() % (ofGetWindowHeight()-200) + 100, rand() % 40 + 10));
+    mock_languages.push_back(new LanguageNode("C", rand() % (ofGetWindowWidth()-200) + 100, rand() % (ofGetWindowHeight()-200) + 100, rand() % 40 + 10));
     
+    for (auto ln : mock_languages) {
+        graph.addLanguageNode(ln);
+    }
+
     // create mock repository nodes
-    RepositoryNode test_rn("jasonkeene/test-rn", 210, 333);
-    
-    // add them all to the graph
-    graph.addLanguageNode(python);
-    graph.addLanguageNode(lua);
-    graph.addLanguageNode(go);
-    graph.addRepositoryNode(test_rn);
+    for (int i=0; i < 30; i++) {
+        RepositoryNode *test_rn = new RepositoryNode("jasonkeene/test-rn", rand() % (ofGetWindowWidth()-200) + 100, rand() % (ofGetWindowHeight()-200) + 100);
+        int language_count = rand() % mock_languages.size() + 1;
+        
+        int remaining_percent = 100;
+        int percent = 0;
+        float total = 0.0;
+        for (int i=0; i<language_count; i++) {
+            if (i+1 == language_count) {
+                percent = remaining_percent;
+            } else {
+                percent = rand() % remaining_percent;
+            }
+            
+            test_rn->addLanguageWeight(mock_languages[rand() % mock_languages.size()], percent / 100.0);
+            total = total + percent / 100.0;
+            remaining_percent -= percent;
+        }
+        if (total != 1.0) {
+            std::cout << total << ", ";
+        }
+        graph.addRepositoryNode(test_rn);
+    }
 }
 
 //--------------------------------------------------------------
@@ -30,6 +53,7 @@ void ofApp::draw(){
     
     // draw graph
     graph.draw();
+    graph.step();
 }
 
 //--------------------------------------------------------------

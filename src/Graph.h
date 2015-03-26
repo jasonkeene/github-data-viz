@@ -8,13 +8,14 @@
 
 class Graph {
 public:
-    void addRepositoryNode(RepositoryNode);
-    void addLanguageNode(LanguageNode);
+    void addRepositoryNode(RepositoryNode *);
+    void addLanguageNode(LanguageNode *);
     void draw();
+    void step();
 
 private:
-    std::vector<RepositoryNode> repository_nodes;
-    std::vector<LanguageNode> language_nodes;
+    std::vector<RepositoryNode *> repository_nodes;
+    std::vector<LanguageNode *> language_nodes;
 };
 
 #endif
