@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "graph.h"
+#include "LanguageNode.h"
 
 class ofApp : public ofBaseApp {
 public:
@@ -20,4 +21,5 @@ public:
     void gotMessage(ofMessage msg);
 private:
     Graph graph;
+    LanguageNode *dragged;
 };

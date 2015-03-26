@@ -30,3 +30,5 @@ void Graph::step()
         ln->step();
     }
 }
+
+std::vector<LanguageNode *> Graph::getLanguageNodes() const { return language_nodes; };

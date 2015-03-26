@@ -23,7 +23,6 @@ void ofApp::setup(){
         
         int remaining_percent = 100;
         int percent = 0;
-        float total = 0.0;
         for (int i=0; i<language_count; i++) {
             if (i+1 == language_count) {
                 percent = remaining_percent;
@@ -32,14 +31,13 @@ void ofApp::setup(){
             }
             
             test_rn->addLanguageWeight(mock_languages[rand() % mock_languages.size()], percent / 100.0);
-            total = total + percent / 100.0;
             remaining_percent -= percent;
-        }
-        if (total != 1.0) {
-            std::cout << total << ", ";
         }
         graph.addRepositoryNode(test_rn);
     }
+    
+    // set dragged
+    dragged = NULL;
 }
 
 //--------------------------------------------------------------
@@ -73,17 +71,24 @@ void ofApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-
+    if (dragged != NULL) {
+        dragged->setPosition(x, y);
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-
+    std::vector<LanguageNode *> language_nodes = graph.getLanguageNodes();
+    for (auto ln : language_nodes) {
+        if (ln->inArea(x, y)) {
+            dragged = ln;
+        }
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-
+    dragged = NULL;
 }
 
 //--------------------------------------------------------------

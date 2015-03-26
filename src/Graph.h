@@ -12,6 +12,8 @@ public:
     void addLanguageNode(LanguageNode *);
     void draw();
     void step();
+    
+    std::vector<LanguageNode *> getLanguageNodes() const;
 
 private:
     std::vector<RepositoryNode *> repository_nodes;
