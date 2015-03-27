@@ -1,15 +1,18 @@
-#pragma once
+#ifndef githubDataViz_ofApp_h
+#define githubDataViz_ofApp_h
 
 #include "ofMain.h"
+
 #include "graph.h"
 #include "LanguageNode.h"
+
 
 class ofApp : public ofBaseApp {
 public:
     void setup();
     void update();
     void draw();
-    
+
     void keyPressed(int key);
     void keyReleased(int key);
     void mouseMoved(int x, int y );
@@ -23,3 +26,5 @@ private:
     Graph graph;
     LanguageNode *dragged;
 };
+
+#endif

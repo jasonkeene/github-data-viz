@@ -28,11 +28,6 @@ bool LanguageNode::inArea(float other_x, float other_y)
     return false;
 }
 
-bool LanguageNode::operator<(const LanguageNode other) const
-{
-    return x < other.getX();
-}
-
 void LanguageNode::setPosition(float x, float y)
 {
     this->x = x;

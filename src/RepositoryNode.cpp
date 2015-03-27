@@ -5,69 +5,125 @@
 #include "RepositoryNode.h"
 
 
+bool DEBUG = false;
+const int DISTANCE_FROM_OTHER_NODES = 20;
+
+
 RepositoryNode::RepositoryNode(std::string name, float x, float y)
-    : name(name), x(x), y(y) {}
+    : name(name), x(x), y(y),
+      velocityX(0), velocityY(0),
+      accelerationX(0), accelerationY(0) {}
 
 void RepositoryNode::draw()
 {
     ofCircle(x, y, 3);
-    for (auto iterator = language_weights.begin(); iterator != language_weights.end(); iterator++) {
-        LanguageNode *ln = iterator->first;
-        ofPolyline line = ofPolyline();
+    ofPolyline line = ofPolyline();
+    for (auto lw : language_weights) {
+        line.clear();
+        ofSetColor(255, 255, 255);
+        LanguageNode *ln = lw.ln;
         line.addVertex(x, y);
         line.addVertex(ln->getX(), ln->getY());
         line.draw();
     }
+    if (DEBUG) {
+        ofPolyline line = ofPolyline();
+        // paint acceleration vector
+        line.clear();
+        ofSetColor(0, 255, 0);
+        line.addVertex(x, y);
+        line.addVertex(x + accelerationX, y - accelerationY);
+        line.draw();
+        // paint velocity vector
+        line.clear();
+        ofSetColor(0, 0, 255);
+        line.addVertex(x, y);
+        line.addVertex(x + velocityX, y - velocityY);
+        line.draw();
+    }
+    ofSetColor(255, 255, 255);
+    line.close();
 }
 
 void RepositoryNode::step()
 {
-    // compute the next position of language node
-    
-    // compute force
-    float forceX = 0;
-    float forceY = 0;
-    
-    for (auto iterator = language_weights.begin(); iterator != language_weights.end(); iterator++) {
-        LanguageNode *ln = iterator->first;
-        float weight = iterator->second;
+    // compute acceleration
+    float _last_positionX = x;
+    float _last_positionY = y;
+    float _accelerationX = 0;
+    float _accelerationY = 0;
+    accelerationX = 0;
+    accelerationY = 0;
+    for (auto lw : language_weights) {
+        LanguageNode *ln = lw.ln;
+        float weight = lw.weight;
         
         float deltaX = ln->getX() - x;
-        float deltaY = ln->getY() - y;
+        float deltaY = -(ln->getY() - y);
         float hypo = sqrt(deltaX * deltaX + deltaY * deltaY);
 
         float theta = std::atan(std::abs(deltaY) / std::abs(deltaX));
+        // fix theta so that it is relative to the positive x-axis
         if (deltaX < 0) {
             if (deltaY < 0) {
-                theta = PI - theta;
-            } else {
                 theta = PI + theta;
+            } else {
+                theta = PI - theta;
             }
         } else {
             if (deltaY < 0) {
-                
-            } else {
                 theta = 2 * PI - theta;
             }
         }
-        float magnitude = hypo * weight / 20;
+        float magnitude = (hypo - ln->getSize() - DISTANCE_FROM_OTHER_NODES) * weight;
+        _accelerationX = magnitude * std::cos(theta) - velocityX / 3;
+        _accelerationY = magnitude * std::sin(theta) - velocityY / 3;
 
-        forceX += magnitude * std::cos(theta);
-        forceY += magnitude * std::sin(theta);
+        if (DEBUG) {
+            ofPolyline line = ofPolyline();
+            // paint acceleration vector
+            ofSetColor(255, 0, 0);
+            line.addVertex(_last_positionX, _last_positionY);
+            _last_positionX = _last_positionX + _accelerationX;
+            _last_positionY = _last_positionY - _accelerationY;
+            line.addVertex(_last_positionX, _last_positionY);
+            line.draw();
+            line.close();
+            ofSetColor(255, 255, 255);
+        }
+
+        accelerationX += _accelerationX;
+        accelerationY += _accelerationY;
     }
     
-    // mutate position
-    x = x + forceX;
-    y = y - forceY;
+    // mutate velocity
+    velocityX += accelerationX / 5;
+    velocityY += accelerationY / 5;
 
-    //usleep(1 * 1000 * 1000);
+    // mutate position
+    x += velocityX / 5;
+    y -= velocityY / 5;
 }
 
 void RepositoryNode::addLanguageWeight(LanguageNode *ln, float weight)
 {
-    language_weights[ln] = weight;
+    LanguageWeight lw = {ln, weight};
+    language_weights.push_back(lw);
+}
+
+float RepositoryNode::totalWeight()
+{
+    float total = 0;
+    for (auto lw : language_weights) {
+        total += lw.weight;
+    }
+    return total;
 }
 
 std::string RepositoryNode::getName() const { return name; }
 float RepositoryNode::getX() const { return x; }
 float RepositoryNode::getY() const { return y; }
+float RepositoryNode::getVelocityX() const { return velocityX; }
+float RepositoryNode::getVelocityY() const { return velocityY; }
+float RepositoryNode::getAccelerationX() const { return accelerationX; }
+float RepositoryNode::getAccelerationY() const { return accelerationY; }

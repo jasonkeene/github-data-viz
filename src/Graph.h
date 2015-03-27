@@ -1,5 +1,5 @@
-#ifndef __githubDataViz__Graph__
-#define __githubDataViz__Graph__
+#ifndef githubDataViz_Graph_h
+#define githubDataViz_Graph_h
 
 #include <vector>
 
@@ -12,9 +12,8 @@ public:
     void addLanguageNode(LanguageNode *);
     void draw();
     void step();
-    
-    std::vector<LanguageNode *> getLanguageNodes() const;
 
+    std::vector<LanguageNode *> getLanguageNodes() const;
 private:
     std::vector<RepositoryNode *> repository_nodes;
     std::vector<LanguageNode *> language_nodes;

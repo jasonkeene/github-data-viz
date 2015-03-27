@@ -1,5 +1,5 @@
-#ifndef __githubDataViz__LanguageNode__
-#define __githubDataViz__LanguageNode__
+#ifndef githubDataViz_LanguageNode_h
+#define githubDataViz_LanguageNode_h
 
 #include <string>
 
@@ -9,8 +9,6 @@ public:
     void draw();
     void step();
     bool inArea(float, float);
-
-    bool operator<(LanguageNode const) const;
 
     void setPosition(float, float);
     

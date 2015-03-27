@@ -6,6 +6,10 @@
 
 #include "LanguageNode.h"
 
+typedef struct {
+    LanguageNode* ln;
+    float weight;
+} LanguageWeight;
 
 class RepositoryNode {
 public:
@@ -13,16 +17,25 @@ public:
     void draw();
     void step();
     void addLanguageWeight(LanguageNode *, float);
+    float totalWeight();
 
     std::string getName() const;
     float getX() const;
     float getY() const;
+    float getVelocityX() const;
+    float getVelocityY() const;
+    float getAccelerationX() const;
+    float getAccelerationY() const;
 
 private:
     std::string name;
     float x;
     float y;
-    std::map<LanguageNode *, float> language_weights;
+    float velocityX;
+    float velocityY;
+    float accelerationX;
+    float accelerationY;
+    std::vector<LanguageWeight> language_weights;
 };
 
 #endif
