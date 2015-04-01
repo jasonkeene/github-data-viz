@@ -12,13 +12,28 @@ __MACOSX
 # win
 *~
 Thumbs.db
-desktop.ini
+[Dd]esktop.ini
 
-# build stuff
-bin/*.app
+# openFrameworks
+[Bb]in/*
+![Bb]in/data/
+[Bb]uild/
+*.o
+[Dd]ebug*/
+[Rr]elease*/
+*.mode*
+*.app/
+*.exe
+*.out
+lab/
+
+# Code::Blocks
+*.cbp
+*.depend
+*.dependent
+*.layout
 
 # stuff for xcode just in case
-build/
 *.pbxuser
 !default.pbxuser
 
@@ -167,8 +182,6 @@ publish/
 # Publish Web Output
 *.[Pp]ublish.xml
 *.azurePubxml
-# TODO: Comment the next line if you want to checkin your web deploy settings 
-# but database connection strings (with potential passwords) will be unencrypted
 *.pubxml
 *.publishproj
 
