@@ -21,6 +21,7 @@ bin/*.app
 build/
 *.pbxuser
 !default.pbxuser
+
 *.mode1v3
 !default.mode1v3
 *.mode2v3
@@ -34,3 +35,7 @@ profile
 *.moved-aside
 DerivedData
 .idea/
+
+# object files on windows
+obj/
+/*.suo
