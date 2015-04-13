@@ -28,7 +28,6 @@ Thumbs.db
 lab/
 
 # Code::Blocks
-*.cbp
 *.depend
 *.dependent
 *.layout
