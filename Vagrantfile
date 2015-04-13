@@ -10,12 +10,19 @@
 #     vagrant box add windows.box --name windows10-ie11
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "windows10-ie11"
-  config.vm.network :private_network, ip: "10.13.37.11"
   config.vm.provider "virtualbox" do |v|
     v.gui = true
     v.customize ["modifyvm", :id, "--memory", 4096]
     v.customize ["modifyvm", :id, "--vram", 128]
     v.customize ["modifyvm", :id, "--accelerate3d", "on"]
+  end
+
+  config.vm.define "windows10" do |v|
+    v.vm.box = "windows10-ie11"
+    v.vm.network :private_network, ip: "10.13.37.11"
+  end
+  config.vm.define "windows7" do |v|
+    v.vm.box = "windows7-ie11"
+    v.vm.network :private_network, ip: "10.13.37.12"
   end
 end
