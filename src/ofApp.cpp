@@ -30,16 +30,31 @@ void ofApp::setup() {
     for (int i=0; i < 30; i++) {
         RepositoryNode *test_rn = new RepositoryNode("jasonkeene/test-rn", rand() % (ofGetWindowWidth()-200) + 100, rand() % (ofGetWindowHeight()-200) + 100);
         int language_count = rand() % mock_languages.size() + 1;
-
+        std::vector<int> languages_used;
         int remaining_percent = 100;
         int percent = 0;
+
         for (int i = 0; i < language_count; ++i) {
             if (i == language_count - 1) {
+                // last language node
                 percent = remaining_percent;
             } else {
                 percent = rand() % remaining_percent;
             }
-            test_rn->addLanguageWeight(mock_languages[rand() % mock_languages.size()], float(percent) / 100.0);
+            // find random language that isn't used
+            LanguageNode *lang;
+        find_lang:
+            int index = rand() % mock_languages.size();
+            for (auto tst : languages_used) {
+                if (tst == index) {
+                    // index is already used, generate a new one
+                    goto find_lang;
+                }
+            }
+            // index hasn't been used yet
+            lang = mock_languages[index];
+            languages_used.push_back(index);
+            test_rn->addLanguageWeight(lang, float(percent) / 100.0);
             remaining_percent -= percent;
         }
         graph.addRepositoryNode(test_rn);
