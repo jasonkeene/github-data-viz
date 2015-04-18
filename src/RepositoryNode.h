@@ -18,6 +18,8 @@ public:
     void step();
     void addLanguageWeight(LanguageNode *, float);
     float totalWeight();
+    bool inArea(float, float);
+    bool hover;
 
     std::string getName() const;
     float getX() const;

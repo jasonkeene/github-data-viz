@@ -6,9 +6,10 @@
 class LanguageNode {
 public:
     LanguageNode(std::string, float, float, float);
-    void draw();
+    void draw(int, int, int);
     void step();
     bool inArea(float, float);
+    bool hover;
 
     void setPosition(float, float);
     

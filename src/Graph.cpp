@@ -16,8 +16,12 @@ void Graph::draw()
     for (auto rn : repository_nodes) {
         rn->draw();
     }
+    int a = 250 ,b = 0 ,c = 200;
     for (auto ln : language_nodes) {
-        ln->draw();
+        ln->draw(a,b,c);
+        a = (a - 80) % 255;
+        b = (b + 40) % 255;
+        c = (c - 20) % 255;
     }
 }
 
@@ -32,3 +36,4 @@ void Graph::step()
 }
 
 std::vector<LanguageNode *> Graph::getLanguageNodes() const { return language_nodes; };
+std::vector<RepositoryNode *> Graph::getRepositoryNodes() const { return repository_nodes; };

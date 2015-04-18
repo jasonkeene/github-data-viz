@@ -79,7 +79,15 @@ void ofApp::keyPressed(int key) {}
 
 void ofApp::keyReleased(int key) {}
 
-void ofApp::mouseMoved(int x, int y) {}
+void ofApp::mouseMoved(int x, int y) {
+    for (auto rn : graph.getRepositoryNodes()) {
+        rn->hover = rn->inArea(x, y);
+    }
+    
+    for (auto ln : graph.getLanguageNodes()) {
+        ln->hover = ln->inArea(x, y);
+    }
+}
 
 void ofApp::mouseDragged(int x, int y, int button) {
     if (dragged != NULL) {

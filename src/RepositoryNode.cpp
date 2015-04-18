@@ -14,17 +14,32 @@ RepositoryNode::RepositoryNode(std::string name, float x, float y)
       velocityX(0), velocityY(0),
       accelerationX(0), accelerationY(0) {}
 
+bool RepositoryNode::inArea(float other_x, float other_y)
+{
+    int size = 6;
+    return other_x < x + size && other_x > x - size && other_y < y + size && other_y > y - size; //*****
+}
+
 void RepositoryNode::draw()
 {
+    ofSetColor(255, 0, 0);
     ofCircle(x, y, 3);
     ofPolyline line = ofPolyline();
+    int count = 0;
     for (auto lw : language_weights) {
         line.clear();
-        ofSetColor(255, 255, 255);
+        ofSetColor(25, 255, 25);
         LanguageNode *ln = lw.ln;
         line.addVertex(x, y);
         line.addVertex(ln->getX(), ln->getY());
         line.draw();
+        if (hover) {
+            std::ostringstream s;
+            ofSetColor(250, 250, 250);
+            s << ln->getName() << " - %" << (lw.weight * 100);
+            ofDrawBitmapString(s.str(), x + 10, y + count * 20);
+        }
+        count++;
     }
     if (DEBUG) {
         ofPolyline line = ofPolyline();

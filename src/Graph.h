@@ -14,6 +14,7 @@ public:
     void step();
 
     std::vector<LanguageNode *> getLanguageNodes() const;
+    std::vector<RepositoryNode *> getRepositoryNodes() const;
 private:
     std::vector<RepositoryNode *> repository_nodes;
     std::vector<LanguageNode *> language_nodes;

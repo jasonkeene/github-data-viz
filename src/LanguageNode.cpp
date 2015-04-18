@@ -6,10 +6,17 @@
 LanguageNode::LanguageNode(string name, float x, float y, float size)
     : name(name), x(x), y(y), size(size) {}
 
-void LanguageNode::draw()
+void LanguageNode::draw(int a, int b, int c)
 {
+    ofSetColor(a, b, c);
     ofCircle(x, y, size);
+    ofSetColor(a, b, c);
     ofDrawBitmapStringHighlight(name, x, y);
+    if (hover) {
+        std::ostringstream s;
+        s << " %" << (getSize());
+        ofDrawBitmapString(s.str(), x, y + getSize() + 20);
+    }
 }
 
 void LanguageNode::step()
