@@ -4,22 +4,29 @@
 
 
 LanguageNode::LanguageNode(string name, float x, float y, float size)
-    : name(name), x(x), y(y), size(size) {}
+    : name(name), x(x), y(y), size(size) {
+        color = ofColor(rand() % 170 + 30, rand() % 170 + 30, rand() % 170 + 30);
+        color.setSaturation(200);
+        //color.setBrightness(3000);
+}
 
-void LanguageNode::draw(int a, int b, int c)
+void LanguageNode::draw()
 {
-    ofSetColor(a, b, c);
+    ofSetColor(color);
     if (hover) {
-        ofSetColor(a + 75, b + 75, c + 75);
-    } //Removes this line to remove languageNode highlighting
+        ofColor brighter = color;
+        brighter.setBrightness(brighter.getBrightness() + 150);
+        ofSetColor(brighter);
+    }
     ofCircle(x, y, size);
-    ofSetColor(a, b, c);
-    ofDrawBitmapStringHighlight(name, x, y);
+    //ofDrawBitmapString(name, x - 10, y);
     if (hover) {
         std::ostringstream s;
         s << " %" << (getSize());
-        ofDrawBitmapString(s.str(), x, y + getSize() + 20);
+        ofDrawBitmapString(s.str(), x - 20, y + getSize() + 15);
     }
+    ofSetColor(255,255,255);
+    ofDrawBitmapString(name, x - name.length() * 4, y + 4);
 }
 
 void LanguageNode::step()

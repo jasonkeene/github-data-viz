@@ -28,10 +28,12 @@ public:
     void gotMessage(ofMessage msg);
     
     RepositoryNode *getDragged();
+    RepositoryNode *getHovered();
 private:
     Graph graph;
     LanguageNode *dragged;
     RepositoryNode *repoDragged;
+    RepositoryNode *hoveredNode;
 };
 
 #endif

@@ -14,14 +14,16 @@ void Graph::addLanguageNode(LanguageNode *ln)
 void Graph::draw()
 {
     for (auto rn : repository_nodes) {
-        rn->draw();
+        if (!rn->hover) {
+            rn->draw();
+        }
     }
-    int a = 250 ,b = 0 ,c = 200;
     for (auto ln : language_nodes) {
-        ln->draw(a,b,c);
-        a = (a - 80) % 255;
-        b = (b + 40) % 255;
-        c = (c - 20) % 255;
+        ln->draw();
+    }
+    // redrawn hover repo nodes
+    if (app->getHovered() != NULL) {
+        app->getHovered()->draw();
     }
 }
 

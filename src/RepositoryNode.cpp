@@ -45,8 +45,8 @@ void RepositoryNode::draw()
     int count = 0;
     for (auto lw : language_weights) {
         line.clear();
-        ofSetColor(25, 255, 25);
         LanguageNode *ln = lw.ln;
+        ofSetColor(ln->color);
         line.addVertex(x, y);
         line.addVertex(ln->getX(), ln->getY());
         line.draw();
@@ -54,7 +54,10 @@ void RepositoryNode::draw()
             std::ostringstream s;
             ofSetColor(250, 250, 250);
             s << ln->getName() << " - %" << (lw.weight * 100);
-            ofDrawBitmapString(s.str(), x + 10, y + count * 20);
+            line.addVertex(x, y);
+            line.addVertex(ln->getX(), ln->getY());
+            line.draw();
+            ofDrawBitmapStringHighlight(s.str(), x + 10, y + count * 20);
         }
         count++;
         

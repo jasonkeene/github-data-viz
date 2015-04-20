@@ -8,6 +8,10 @@
 void ofApp::setup() {
     // create mock language nodes
     vector<LanguageNode *> mock_languages;
+    
+    //ofLight light;
+    //light.enable();
+    //ofEnableLighting();
 
     mock_languages.push_back(new LanguageNode("Python", rand() % (ofGetWindowWidth()-200) + 100, rand() % (ofGetWindowHeight()-200) + 100, rand() % 40 + 10));
     mock_languages.push_back(new LanguageNode("Lua", rand() % (ofGetWindowWidth()-200) + 100, rand() % (ofGetWindowHeight()-200) + 100, rand() % 40 + 10));
@@ -93,11 +97,19 @@ void ofApp::keyReleased(int key) {}
 
 void ofApp::mouseMoved(int x, int y) {
     for (auto rn : graph.getRepositoryNodes()) {
-        rn->hover = rn->inArea(x, y);
+        if (rn->inArea(x, y)) {
+            rn->hover = true;
+            hoveredNode = rn;
+        }
+        else {
+            rn->hover = false;
+        }
     }
     
     for (auto ln : graph.getLanguageNodes()) {
         ln->hover = ln->inArea(x, y);
+        // TODO: make this polymorphic
+        //hoveredNode = rn;
     }
 }
 
@@ -128,6 +140,7 @@ void ofApp::mousePressed(int x, int y, int button) {
 void ofApp::mouseReleased(int x, int y, int button) {
     dragged = NULL;
     repoDragged = NULL;
+    hoveredNode = NULL;
 }
 
 void ofApp::windowResized(int w, int h) {}
@@ -137,6 +150,11 @@ void ofApp::gotMessage(ofMessage msg) {}
 RepositoryNode *ofApp::getDragged()
 {
     return repoDragged;
+}
+
+RepositoryNode *ofApp::getHovered()
+{
+    return hoveredNode;
 }
 
 void ofApp::dragEvent(ofDragInfo dragInfo) {}
