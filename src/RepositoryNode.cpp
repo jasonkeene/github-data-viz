@@ -14,17 +14,62 @@ RepositoryNode::RepositoryNode(std::string name, float x, float y)
       velocityX(0), velocityY(0),
       accelerationX(0), accelerationY(0) {}
 
+bool RepositoryNode::inArea(float other_x, float other_y)
+{
+    int size = 6;
+    
+    return
+    other_x < x + size &&
+    other_x > x - size
+    && other_y < y + size
+    && other_y > y - size;
+    
+    if (other_x < x + size && //**
+        other_x > x - size && //**
+        other_y < y + size && //**
+        other_y > y - size) { //**
+        return true;
+    }
+    return false;
+}
+
+void RepositoryNode::setPosition(float x, float y)
+{
+    this->x = x;
+    this->y = y;
+}
+
 void RepositoryNode::draw()
 {
-    ofCircle(x, y, 3);
     ofPolyline line = ofPolyline();
+    int count = 0;
     for (auto lw : language_weights) {
         line.clear();
-        ofSetColor(255, 255, 255);
         LanguageNode *ln = lw.ln;
+        ofSetColor(ln->color);
+        if (ln->hover)
+        {
+            ofColor brighter = ln->color;
+            brighter.setBrightness(brighter.getBrightness() + 150);
+            ofSetColor(brighter);
+        }
         line.addVertex(x, y);
         line.addVertex(ln->getX(), ln->getY());
         line.draw();
+        if (hover) {
+            std::ostringstream s;
+            ofSetColor(250, 250, 250);
+            s << ln->getName() << " - %" << (lw.weight * 100);
+            line.addVertex(x, y);
+            line.addVertex(ln->getX(), ln->getY());
+            line.draw();
+            ofDrawBitmapStringHighlight(s.str(), x + 10, y + count * 20);
+        }
+        count++;
+        
+        ofSetColor(192, 56, 8);  // sets color of repository node to green
+        if (hover) {ofSetColor(255,255,255);}
+        ofCircle(x, y, 4);
     }
     if (DEBUG) {
         ofPolyline line = ofPolyline();

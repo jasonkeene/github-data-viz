@@ -3,6 +3,8 @@
 
 #include <vector>
 
+class ofApp;
+
 #include "RepositoryNode.h"
 #include "LanguageNode.h"
 
@@ -12,11 +14,18 @@ public:
     void addLanguageNode(LanguageNode *);
     void draw();
     void step();
+    void setApp(ofApp *);
+    ofApp *getApp();
 
     std::vector<LanguageNode *> getLanguageNodes() const;
+    std::vector<RepositoryNode *> getRepositoryNodes() const;
 private:
     std::vector<RepositoryNode *> repository_nodes;
     std::vector<LanguageNode *> language_nodes;
+    ofApp *app;
 };
+
+
+#include "ofApp.h"
 
 #endif

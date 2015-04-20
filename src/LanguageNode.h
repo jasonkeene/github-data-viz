@@ -1,6 +1,8 @@
 #ifndef githubDataViz_LanguageNode_h
 #define githubDataViz_LanguageNode_h
 
+#include "ofMain.h"
+
 #include <string>
 
 class LanguageNode {
@@ -9,6 +11,7 @@ public:
     void draw();
     void step();
     bool inArea(float, float);
+    bool hover;
 
     void setPosition(float, float);
     
@@ -16,6 +19,8 @@ public:
     float getSize() const;
     float getX() const;
     float getY() const;
+    
+    ofColor color;
 
 private:
     std::string name;

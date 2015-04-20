@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "ofApp.h"
 
 #include "LanguageNode.h"
@@ -6,6 +8,10 @@
 void ofApp::setup() {
     // create mock language nodes
     vector<LanguageNode *> mock_languages;
+    
+    //ofLight light;
+    //light.enable();
+    //ofEnableLighting();
 
     mock_languages.push_back(new LanguageNode("Python", rand() % (ofGetWindowWidth()-200) + 100, rand() % (ofGetWindowHeight()-200) + 100, rand() % 40 + 10));
     mock_languages.push_back(new LanguageNode("Lua", rand() % (ofGetWindowWidth()-200) + 100, rand() % (ofGetWindowHeight()-200) + 100, rand() % 40 + 10));
@@ -23,12 +29,18 @@ void ofApp::setup() {
     // create mock repository nodes
 
 //    RepositoryNode *test_rn = new RepositoryNode("jasonkeene/test-rn", 100, 400);
-//    test_rn->addLanguageWeight(mock_languages[0], 0.8);
-//    test_rn->addLanguageWeight(mock_languages[1], 0.2);
+//    test_rn->addLanguageWeight(mock_languages[0], 0.5);
+//    test_rn->addLanguageWeight(mock_languages[1], 0.5);
 //    graph.addRepositoryNode(test_rn);
 
     for (int i=0; i < 30; i++) {
-        RepositoryNode *test_rn = new RepositoryNode("jasonkeene/test-rn", rand() % (ofGetWindowWidth()-200) + 100, rand() % (ofGetWindowHeight()-200) + 100);
+        // generate repo name
+        std::stringstream s;
+        s << "jasonkeene/test-rn-";
+        s << i;
+        string repo_name = s.str();
+
+        RepositoryNode *test_rn = new RepositoryNode(repo_name, rand() % (ofGetWindowWidth()-200) + 100, rand() % (ofGetWindowHeight()-200) + 100);
         int language_count = rand() % mock_languages.size() + 1;
         std::vector<int> languages_used;
         int remaining_percent = 100;
@@ -60,8 +72,12 @@ void ofApp::setup() {
         graph.addRepositoryNode(test_rn);
     }
 
+    // backref to app
+    graph.setApp(this);
+    
     // set dragged
     dragged = NULL;
+    repoDragged = NULL;
 }
 
 void ofApp::update() {}
@@ -79,11 +95,30 @@ void ofApp::keyPressed(int key) {}
 
 void ofApp::keyReleased(int key) {}
 
-void ofApp::mouseMoved(int x, int y) {}
+void ofApp::mouseMoved(int x, int y) {
+    for (auto rn : graph.getRepositoryNodes()) {
+        if (rn->inArea(x, y)) {
+            rn->hover = true;
+            hoveredNode = rn;
+        }
+        else {
+            rn->hover = false;
+        }
+    }
+    
+    for (auto ln : graph.getLanguageNodes()) {
+        ln->hover = ln->inArea(x, y);
+        // TODO: make this polymorphic
+        //hoveredNode = rn;
+    }
+}
 
 void ofApp::mouseDragged(int x, int y, int button) {
     if (dragged != NULL) {
         dragged->setPosition(x, y);
+    }
+    if (repoDragged != NULL) {
+        repoDragged->setPosition(x, y);
     }
 }
 
@@ -94,14 +129,35 @@ void ofApp::mousePressed(int x, int y, int button) {
             dragged = ln;
         }
     }
+    std::vector<RepositoryNode *> repository_nodes = graph.getRepositoryNodes(); //*******
+    for (auto rn: repository_nodes) {
+        if (rn->inArea(x, y)) {
+            repoDragged = rn;
+        }
+    }
 }
 
 void ofApp::mouseReleased(int x, int y, int button) {
     dragged = NULL;
+    repoDragged = NULL;
+    hoveredNode = NULL;
+    for (auto rn : graph.getRepositoryNodes()) {
+        rn->hover = false;
+    }
 }
 
 void ofApp::windowResized(int w, int h) {}
 
 void ofApp::gotMessage(ofMessage msg) {}
+
+RepositoryNode *ofApp::getDragged()
+{
+    return repoDragged;
+}
+
+RepositoryNode *ofApp::getHovered()
+{
+    return hoveredNode;
+}
 
 void ofApp::dragEvent(ofDragInfo dragInfo) {}
