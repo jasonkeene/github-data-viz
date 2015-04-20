@@ -141,6 +141,9 @@ void ofApp::mouseReleased(int x, int y, int button) {
     dragged = NULL;
     repoDragged = NULL;
     hoveredNode = NULL;
+    for (auto rn : graph.getRepositoryNodes()) {
+        rn->hover = false;
+    }
 }
 
 void ofApp::windowResized(int w, int h) {}
