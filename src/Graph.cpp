@@ -28,11 +28,23 @@ void Graph::draw()
 void Graph::step()
 {
     for (auto rn : repository_nodes) {
-        rn->step();
+        if (app->getDragged() == NULL || app->getDragged()->getName() != rn->getName()) {
+            rn->step();
+        }
     }
     for (auto ln : language_nodes) {
         ln->step();
     }
+}
+
+void Graph::setApp(ofApp *a)
+{
+    app = a;
+}
+
+ofApp *Graph::getApp()
+{
+    return app;
 }
 
 std::vector<LanguageNode *> Graph::getLanguageNodes() const { return language_nodes; };

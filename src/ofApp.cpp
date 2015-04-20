@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "ofApp.h"
 
 #include "LanguageNode.h"
@@ -23,12 +25,18 @@ void ofApp::setup() {
     // create mock repository nodes
 
 //    RepositoryNode *test_rn = new RepositoryNode("jasonkeene/test-rn", 100, 400);
-//    test_rn->addLanguageWeight(mock_languages[0], 0.8);
-//    test_rn->addLanguageWeight(mock_languages[1], 0.2);
+//    test_rn->addLanguageWeight(mock_languages[0], 0.5);
+//    test_rn->addLanguageWeight(mock_languages[1], 0.5);
 //    graph.addRepositoryNode(test_rn);
 
     for (int i=0; i < 30; i++) {
-        RepositoryNode *test_rn = new RepositoryNode("jasonkeene/test-rn", rand() % (ofGetWindowWidth()-200) + 100, rand() % (ofGetWindowHeight()-200) + 100);
+        // generate repo name
+        std::stringstream s;
+        s << "jasonkeene/test-rn-";
+        s << i;
+        string repo_name = s.str();
+
+        RepositoryNode *test_rn = new RepositoryNode(repo_name, rand() % (ofGetWindowWidth()-200) + 100, rand() % (ofGetWindowHeight()-200) + 100);
         int language_count = rand() % mock_languages.size() + 1;
         std::vector<int> languages_used;
         int remaining_percent = 100;
@@ -60,6 +68,9 @@ void ofApp::setup() {
         graph.addRepositoryNode(test_rn);
     }
 
+    // backref to app
+    graph.setApp(this);
+    
     // set dragged
     dragged = NULL;
     repoDragged = NULL;
@@ -122,5 +133,10 @@ void ofApp::mouseReleased(int x, int y, int button) {
 void ofApp::windowResized(int w, int h) {}
 
 void ofApp::gotMessage(ofMessage msg) {}
+
+RepositoryNode *ofApp::getDragged()
+{
+    return repoDragged;
+}
 
 void ofApp::dragEvent(ofDragInfo dragInfo) {}

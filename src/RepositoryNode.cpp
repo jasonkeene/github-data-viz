@@ -41,9 +41,6 @@ void RepositoryNode::setPosition(float x, float y)
 
 void RepositoryNode::draw()
 {
-    ofSetColor(255, 0, 0);//sets color of repository node to green
-    if (hover) {ofSetColor(255,255,255);}
-    ofCircle(x, y, 4);
     ofPolyline line = ofPolyline();
     int count = 0;
     for (auto lw : language_weights) {
@@ -60,6 +57,10 @@ void RepositoryNode::draw()
             ofDrawBitmapString(s.str(), x + 10, y + count * 20);
         }
         count++;
+        
+        ofSetColor(255, 0, 0);//sets color of repository node to green
+        if (hover) {ofSetColor(255,255,255);}
+        ofCircle(x, y, 4);
     }
     if (DEBUG) {
         ofPolyline line = ofPolyline();
