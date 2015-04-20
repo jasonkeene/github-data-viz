@@ -12,7 +12,7 @@ def main():
         stats = {}
         line_counts = REDIS.hgetall(repo_name)
 
-        if 'documentation_url' in line_counts:
+        if 'documentation_url' in line_counts or 'block' in line_counts:
             continue
 
         total_lines = sum([int(x) for x in line_counts.values()])
