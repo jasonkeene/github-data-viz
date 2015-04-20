@@ -17,13 +17,33 @@ RepositoryNode::RepositoryNode(std::string name, float x, float y)
 bool RepositoryNode::inArea(float other_x, float other_y)
 {
     int size = 6;
-    return other_x < x + size && other_x > x - size && other_y < y + size && other_y > y - size; //*****
+    
+    return
+    other_x < x + size &&
+    other_x > x - size
+    && other_y < y + size
+    && other_y > y - size;
+    
+    if (other_x < x + size && //**
+        other_x > x - size && //**
+        other_y < y + size && //**
+        other_y > y - size) { //**
+        return true;
+    }
+    return false;
+}
+
+void RepositoryNode::setPosition(float x, float y)
+{
+    this->x = x;
+    this->y = y;
 }
 
 void RepositoryNode::draw()
 {
-    ofSetColor(255, 0, 0);
-    ofCircle(x, y, 3);
+    ofSetColor(255, 0, 0);//sets color of repository node to green
+    if (hover) {ofSetColor(255,255,255);}
+    ofCircle(x, y, 4);
     ofPolyline line = ofPolyline();
     int count = 0;
     for (auto lw : language_weights) {

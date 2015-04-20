@@ -20,6 +20,8 @@ public:
     float totalWeight();
     bool inArea(float, float);
     bool hover;
+    
+    void setPosition(float, float);
 
     std::string getName() const;
     float getX() const;

@@ -62,6 +62,7 @@ void ofApp::setup() {
 
     // set dragged
     dragged = NULL;
+    repoDragged = NULL;
 }
 
 void ofApp::update() {}
@@ -93,6 +94,9 @@ void ofApp::mouseDragged(int x, int y, int button) {
     if (dragged != NULL) {
         dragged->setPosition(x, y);
     }
+    if (repoDragged != NULL) {
+        repoDragged->setPosition(x, y);
+    }
 }
 
 void ofApp::mousePressed(int x, int y, int button) {
@@ -102,10 +106,17 @@ void ofApp::mousePressed(int x, int y, int button) {
             dragged = ln;
         }
     }
+    std::vector<RepositoryNode *> repository_nodes = graph.getRepositoryNodes(); //*******
+    for (auto rn: repository_nodes) {
+        if (rn->inArea(x, y)) {
+            repoDragged = rn;
+        }
+    }
 }
 
 void ofApp::mouseReleased(int x, int y, int button) {
     dragged = NULL;
+    repoDragged = NULL;
 }
 
 void ofApp::windowResized(int w, int h) {}

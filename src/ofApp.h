@@ -25,6 +25,7 @@ public:
 private:
     Graph graph;
     LanguageNode *dragged;
+    RepositoryNode *repoDragged;
 };
 
 #endif

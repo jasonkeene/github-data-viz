@@ -9,6 +9,7 @@ LanguageNode::LanguageNode(string name, float x, float y, float size)
 void LanguageNode::draw(int a, int b, int c)
 {
     ofSetColor(a, b, c);
+    if (hover) {ofSetColor(0, 0, 0);} //Removes this line to remove languageNode highlighting
     ofCircle(x, y, size);
     ofSetColor(a, b, c);
     ofDrawBitmapStringHighlight(name, x, y);
