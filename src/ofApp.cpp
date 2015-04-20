@@ -75,9 +75,10 @@ void ofApp::setup() {
     // backref to app
     graph.setApp(this);
     
-    // set dragged
+    // initialize pointers
     dragged = NULL;
     repoDragged = NULL;
+    hoveredNode = NULL;
 }
 
 void ofApp::update() {}
