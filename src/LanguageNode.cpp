@@ -5,7 +5,7 @@
 
 LanguageNode::LanguageNode(string name, float x, float y, float size)
     : name(name), x(x), y(y), size(size) {
-        color = ofColor(rand() % 170 + 30, rand() % 170 + 30, rand() % 170 + 30);
+        color = ofColor(rand() % 170 + 50, rand() % 170 + 50, rand() % 170 + 50);
         color.setSaturation(200);
         //color.setBrightness(3000);
 }

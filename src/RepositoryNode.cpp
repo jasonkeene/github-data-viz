@@ -47,6 +47,12 @@ void RepositoryNode::draw()
         line.clear();
         LanguageNode *ln = lw.ln;
         ofSetColor(ln->color);
+        if (ln->hover)
+        {
+            ofColor brighter = ln->color;
+            brighter.setBrightness(brighter.getBrightness() + 150);
+            ofSetColor(brighter);
+        }
         line.addVertex(x, y);
         line.addVertex(ln->getX(), ln->getY());
         line.draw();
