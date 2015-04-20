@@ -61,7 +61,7 @@ void RepositoryNode::draw()
         }
         count++;
         
-        //ofSetColor(255, 0, 0);//sets color of repository node to green
+        ofSetColor(192, 56, 8);  // sets color of repository node to green
         if (hover) {ofSetColor(255,255,255);}
         ofCircle(x, y, 4);
     }
