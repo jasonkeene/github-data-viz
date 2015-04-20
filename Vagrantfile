@@ -25,4 +25,10 @@ Vagrant.configure(2) do |config|
     v.vm.box = "windows7-ie11"
     v.vm.network :private_network, ip: "10.13.37.12"
   end
+  config.vm.define "redis" do |v|
+    v.vm.box = "ubuntu/trusty64"
+    v.vm.provision :shell, :path => "bootstrap-redis.sh"
+    v.vm.network :private_network, ip: "10.13.37.13"
+    v.vm.network :forwarded_port, guest: 6379, host: 6379
+  end
 end

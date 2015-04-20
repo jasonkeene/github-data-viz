@@ -247,3 +247,7 @@ FakesAssemblies/
 
 # vagrant
 .vagrant
+
+# downloaded data
+data/*.json.gz
+data/*.txt
