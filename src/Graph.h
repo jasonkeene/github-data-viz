@@ -17,6 +17,10 @@ public:
     void setApp(ofApp *);
     ofApp *getApp();
 
+    static Graph buildRandomGraph();
+    static Graph buildSimpleGraph();
+    static Graph buildProductionGraph();
+
     std::vector<LanguageNode *> getLanguageNodes() const;
     std::vector<RepositoryNode *> getRepositoryNodes() const;
 private:
