@@ -51,6 +51,11 @@ void LanguageNode::setPosition(float x, float y)
     this->y = y;
 }
 
+void LanguageNode::setSize(float size)
+{
+    this->size = size;
+}
+
 std::string LanguageNode::getName() const { return name; }
 float LanguageNode::getSize() const { return size; }
 float LanguageNode::getX() const { return x; }

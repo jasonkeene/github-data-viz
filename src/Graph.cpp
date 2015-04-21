@@ -1,4 +1,7 @@
+#include <string>
+
 #include "Graph.h"
+#include "LanguageNode.h"
 
 
 Graph Graph::buildRandomGraph()
@@ -87,7 +90,78 @@ Graph Graph::buildProductionGraph()
     Graph graph;
 
     // read in prod data
+    ofBuffer buffer = ofBufferFromFile(ofToDataPath("language_stats.txt"));
+    if (buffer.size() == 0) {
+        throw "data could not be loaded from the file";
+    }
 
+    string line;
+
+    int count = 0;
+
+    std::map<string, LanguageNode*> languages;
+    vector<RepositoryNode *> repositories;
+    while (true) {
+        // grab the next line
+        line = buffer.getNextLine();
+        if (line.length() == 0) {
+            break;
+        }
+
+        // split \t into parts
+        vector<string> parts;
+        string part = "";
+        for (auto c : line) {
+            if (c != '\t') {
+                part += c;
+            } else {
+                parts.push_back(part);
+                part = "";
+                continue;
+            }
+        }
+        parts.push_back(part);
+
+        // create nodes based on parts
+        int i = 0;
+        RepositoryNode *repo_node = NULL;
+        LanguageNode *lang_node = NULL;
+        for (auto part : parts) {
+            if (i == 0) {
+                repo_node = new RepositoryNode(part, rand() % (ofGetWindowWidth()-200) + 100, rand() % (ofGetWindowHeight()-200) + 100);
+                repositories.push_back(repo_node);
+            } else if (i % 2 == 1) {
+                if (languages.find(part) == languages.end()) {
+                    // not found
+                    lang_node = new LanguageNode(part, rand() % (ofGetWindowWidth()-200) + 100, rand() % (ofGetWindowHeight()-200) + 100, 0);
+                    languages[part] = lang_node;
+                } else {
+                    // found
+                    lang_node = languages[part];
+                }
+            } else {
+                float weight = std::atof(part.c_str()) / 100.0;
+                repo_node->addLanguageWeight(lang_node, weight);
+                lang_node->setSize(lang_node->getSize() + weight * 5);
+                lang_node = NULL;
+            }
+            i++;
+        }
+
+        // TODO: remove count stuff once we've made things more efficient
+        count++;
+        if (count > 50) {break;}
+    }
+
+    // build graph
+    //graph.addRepositoryNode(ln);
+    for (auto rn : repositories) {
+        graph.addRepositoryNode(rn);
+    }
+    for (auto lnt : languages) {
+        auto ln = lnt.second;
+        graph.addLanguageNode(ln);
+    }
     return graph;
 }
 

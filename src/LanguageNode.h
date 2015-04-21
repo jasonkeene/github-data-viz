@@ -14,6 +14,7 @@ public:
     bool hover;
 
     void setPosition(float, float);
+    void setSize(float);
     
     std::string getName() const;
     float getSize() const;

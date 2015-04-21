@@ -7,8 +7,8 @@
 
 void ofApp::setup() {
 //    graph = Graph::buildSimpleGraph();
-    graph = Graph::buildRandomGraph();
-//    graph = Graph::buildProductionGraph();
+//    graph = Graph::buildRandomGraph();
+    graph = Graph::buildProductionGraph();
 
     // backref to app
     graph.setApp(this);
