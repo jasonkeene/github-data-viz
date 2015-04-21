@@ -90,10 +90,10 @@ void RepositoryNode::draw()
     }
 
     // draw node
-    ofSetColor(192, 56, 8);
     if (hover) {
         ofSetColor(255, 255, 255);
     }
+    ofSetColor(255, 255, 255);
     ofCircle(x, y, 4);
 
     if (DEBUG) {
@@ -113,7 +113,6 @@ void RepositoryNode::draw()
     }
 
     // cleanum
-    ofSetColor(255, 255, 255);
     line.close();
 }
 
