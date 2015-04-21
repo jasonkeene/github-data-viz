@@ -4,16 +4,18 @@
 #include <string>
 #include <map>
 
+#include "Node.h"
 #include "LanguageNode.h"
-#include "Vector.h"
 
 typedef struct {
     LanguageNode* ln;
     float weight;
 } LanguageWeight;
 
-class RepositoryNode {
+class RepositoryNode : public Node {
 public:
+    RepositoryNode(std::string, float, float, float, ofColor);
+    RepositoryNode(std::string, float, float, float);
     RepositoryNode(std::string, float, float);
 
     void draw();
@@ -21,14 +23,6 @@ public:
 
     void addLanguageWeight(LanguageNode *, float);
     float totalWeight();
-    bool inArea(float, float);
-
-    bool hover;
-    std::string name;
-    Vector position;
-    Vector velocity;
-    Vector acceleration;
-    float size;
     std::vector<LanguageWeight> language_weights;
 };
 

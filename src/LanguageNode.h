@@ -6,19 +6,16 @@
 #include "ofMain.h"
 
 #include "Vector.h"
+#include "Node.h"
 
-class LanguageNode {
+class LanguageNode : public Node {
 public:
+    LanguageNode(std::string, float, float, float, ofColor);
     LanguageNode(std::string, float, float, float);
+    LanguageNode(std::string, float, float);
+
     void draw();
     void step();
-    bool inArea(float, float);
-    bool hover;
-
-    std::string name;
-    ofColor color;
-    float size;
-    Vector position;
 };
 
 #endif

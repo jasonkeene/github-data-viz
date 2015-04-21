@@ -1,21 +1,18 @@
-
-
+#include "Vector.h"
 #include "RepositoryNode.h"
 
 
 const int DISTANCE_FROM_OTHER_NODES = 20;
 
 
-RepositoryNode::RepositoryNode(std::string name, float x, float y)
-    : name(name), position(x, y), size(4) {}
+RepositoryNode::RepositoryNode(string name, float x, float y, float size, ofColor color)
+    : Node(name, x, y, size, color) {}
 
-bool RepositoryNode::inArea(float other_x, float other_y)
-{
-    return other_x < position.x + size &&
-           other_x > position.x - size &&
-           other_y < position.y + size &&
-           other_y > position.y - size;
-}
+RepositoryNode::RepositoryNode(string name, float x, float y, float size)
+    : Node(name, x, y, size) {}
+
+RepositoryNode::RepositoryNode(string name, float x, float y)
+    : Node(name, x, y) {}
 
 void RepositoryNode::draw()
 {
