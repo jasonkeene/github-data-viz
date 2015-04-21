@@ -42,39 +42,60 @@ void RepositoryNode::setPosition(float x, float y)
 void RepositoryNode::draw()
 {
     ofPolyline line = ofPolyline();
-    int count = 0;
+
+    // draw lines
+    for (auto lw : language_weights) {
+        // figure out color of line
+        if (hover) {
+            // draw all lines as white when hovering over repo node
+            ofSetColor(255, 255, 255);
+        } else if (lw.ln->hover) {
+            // highlight this ine when hovering over it's language node
+            ofColor brighter = lw.ln->color;
+            brighter.setBrightness(brighter.getBrightness() + 100);
+            ofSetColor(brighter);
+        } else {
+            // set color to just be the color of the language node
+            ofSetColor(lw.ln->color);
+        }
+
+        // draw the line
+        line.clear();
+        line.addVertex(x, y);
+        line.addVertex(lw.ln->getX(), lw.ln->getY());
+        line.draw();
+    }
+
+    // draw additional stuff when hovering over repo node
     if (hover) {
+        // offset counter
+        int count = 0;
+
+        // draw name first
         ofDrawBitmapStringHighlight(name, x + 10, y + count * 20);
         count++;
-    }
-    for (auto lw : language_weights) {
-        line.clear();
-        LanguageNode *ln = lw.ln;
-        ofSetColor(ln->color);
-        if (ln->hover)
-        {
-            ofColor brighter = ln->color;
-            brighter.setBrightness(brighter.getBrightness() + 75);
-            ofSetColor(brighter);
-        }
-        line.addVertex(x, y);
-        line.addVertex(ln->getX(), ln->getY());
-        line.draw();
-        if (hover) {
-            std::ostringstream s;
+
+        // draw all the percentages
+        for (auto lw : language_weights) {
             ofSetColor(250, 250, 250);
-            s << ln->getName() << " - %" << (lw.weight * 100);
-            line.addVertex(x, y);
-            line.addVertex(ln->getX(), ln->getY());
-            line.draw();
+
+            // compose string
+            std::ostringstream s;
+            s << lw.ln->getName() << " - %" << (lw.weight * 100);
+
+            // draw it
             ofDrawBitmapStringHighlight(s.str(), x + 10, y + count * 20);
+            count++;
         }
-        count++;
-        
-        ofSetColor(192, 56, 8);  // sets color of repository node to green
-        if (hover) {ofSetColor(255,255,255);}
-        ofCircle(x, y, 4);
     }
+
+    // draw node
+    ofSetColor(192, 56, 8);
+    if (hover) {
+        ofSetColor(255, 255, 255);
+    }
+    ofCircle(x, y, 4);
+
     if (DEBUG) {
         ofPolyline line = ofPolyline();
         // paint acceleration vector
@@ -90,6 +111,8 @@ void RepositoryNode::draw()
         line.addVertex(x + velocityX, y - velocityY);
         line.draw();
     }
+
+    // cleanum
     ofSetColor(255, 255, 255);
     line.close();
 }
