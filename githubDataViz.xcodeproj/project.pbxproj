@@ -10,6 +10,7 @@
 		2E5FA4DA1AC34277002C3A55 /* LanguageNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E5FA4D81AC34277002C3A55 /* LanguageNode.cpp */; };
 		2E5FA4DD1AC34477002C3A55 /* Graph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E5FA4DB1AC34477002C3A55 /* Graph.cpp */; };
 		2EA4C6811AC33A9B00F7E8FB /* RepositoryNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2EA4C6801AC33A9B00F7E8FB /* RepositoryNode.cpp */; };
+		2EEAE6421AE6F5BE00AD2EE3 /* Vector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2EEAE6401AE6F5BE00AD2EE3 /* Vector.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -68,6 +69,8 @@
 		2E5FA4DC1AC34477002C3A55 /* Graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Graph.h; sourceTree = "<group>"; };
 		2EA4C67F1AC33A2700F7E8FB /* RepositoryNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RepositoryNode.h; sourceTree = "<group>"; };
 		2EA4C6801AC33A9B00F7E8FB /* RepositoryNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RepositoryNode.cpp; sourceTree = "<group>"; };
+		2EEAE6401AE6F5BE00AD2EE3 /* Vector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vector.cpp; sourceTree = "<group>"; };
+		2EEAE6411AE6F5BE00AD2EE3 /* Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -198,6 +201,8 @@
 				2E5FA4D91AC34277002C3A55 /* LanguageNode.h */,
 				2E5FA4DB1AC34477002C3A55 /* Graph.cpp */,
 				2E5FA4DC1AC34477002C3A55 /* Graph.h */,
+				2EEAE6401AE6F5BE00AD2EE3 /* Vector.cpp */,
+				2EEAE6411AE6F5BE00AD2EE3 /* Vector.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -300,6 +305,7 @@
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				2EA4C6811AC33A9B00F7E8FB /* RepositoryNode.cpp in Sources */,
+				2EEAE6421AE6F5BE00AD2EE3 /* Vector.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				2E5FA4DA1AC34277002C3A55 /* LanguageNode.cpp in Sources */,
 				2E5FA4DD1AC34477002C3A55 /* Graph.cpp in Sources */,

@@ -142,7 +142,7 @@ Graph Graph::buildProductionGraph()
             } else {
                 float weight = std::atof(part.c_str()) / 100.0;
                 repo_node->addLanguageWeight(lang_node, weight);
-                lang_node->setSize(lang_node->getSize() + weight * 10);
+                lang_node->size += weight * 10;
                 lang_node = NULL;
             }
             i++;
@@ -160,7 +160,9 @@ Graph Graph::buildProductionGraph()
     }
     for (auto lnt : languages) {
         auto ln = lnt.second;
-        if (ln->getSize() < 10) { ln->setSize(10); }
+        if (ln->size < 10) {
+            ln->size = 10;
+        }
         graph.addLanguageNode(ln);
     }
     return graph;
@@ -195,7 +197,7 @@ void Graph::draw()
 void Graph::step()
 {
     for (auto rn : repository_nodes) {
-        if (app->getDragged() == NULL || app->getDragged()->getName() != rn->getName()) {
+        if (app->getDragged() == NULL || app->getDragged()->name != rn->name) {
             rn->step();
         }
     }

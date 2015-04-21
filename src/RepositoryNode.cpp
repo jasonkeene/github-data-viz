@@ -1,42 +1,20 @@
-#include <cmath>
 
-#include "ofMain.h"
 
 #include "RepositoryNode.h"
 
 
-bool DEBUG = false;
 const int DISTANCE_FROM_OTHER_NODES = 20;
 
 
 RepositoryNode::RepositoryNode(std::string name, float x, float y)
-    : name(name), x(x), y(y),
-      velocityX(0), velocityY(0),
-      accelerationX(0), accelerationY(0) {}
+    : name(name), position(x, y), size(4) {}
 
 bool RepositoryNode::inArea(float other_x, float other_y)
 {
-    int size = 6;
-    
-    return
-    other_x < x + size &&
-    other_x > x - size
-    && other_y < y + size
-    && other_y > y - size;
-    
-    if (other_x < x + size && //**
-        other_x > x - size && //**
-        other_y < y + size && //**
-        other_y > y - size) { //**
-        return true;
-    }
-    return false;
-}
-
-void RepositoryNode::setPosition(float x, float y)
-{
-    this->x = x;
-    this->y = y;
+    return other_x < position.x + size &&
+           other_x > position.x - size &&
+           other_y < position.y + size &&
+           other_y > position.y - size;
 }
 
 void RepositoryNode::draw()
@@ -61,8 +39,8 @@ void RepositoryNode::draw()
 
         // draw the line
         line.clear();
-        line.addVertex(x, y);
-        line.addVertex(lw.ln->getX(), lw.ln->getY());
+        line.addVertex(position.x, position.y);
+        line.addVertex(lw.ln->position.x, lw.ln->position.y);
         line.draw();
     }
 
@@ -72,7 +50,7 @@ void RepositoryNode::draw()
         int count = 0;
 
         // draw name first
-        ofDrawBitmapStringHighlight(name, x + 10, y + count * 20);
+        ofDrawBitmapStringHighlight(name, position.x + 10, position.y + count * 20);
         count++;
 
         // draw all the percentages
@@ -81,10 +59,10 @@ void RepositoryNode::draw()
 
             // compose string
             std::ostringstream s;
-            s << lw.ln->getName() << " - %" << (lw.weight * 100);
+            s << lw.ln->name << " - %" << (lw.weight * 100);
 
             // draw it
-            ofDrawBitmapStringHighlight(s.str(), x + 10, y + count * 20);
+            ofDrawBitmapStringHighlight(s.str(), position.x + 10, position.y + count * 20);
             count++;
         }
     }
@@ -94,23 +72,7 @@ void RepositoryNode::draw()
         ofSetColor(255, 255, 255);
     }
     ofSetColor(255, 255, 255);
-    ofCircle(x, y, 4);
-
-    if (DEBUG) {
-        ofPolyline line = ofPolyline();
-        // paint acceleration vector
-        line.clear();
-        ofSetColor(0, 255, 0);
-        line.addVertex(x, y);
-        line.addVertex(x + accelerationX, y - accelerationY);
-        line.draw();
-        // paint velocity vector
-        line.clear();
-        ofSetColor(0, 0, 255);
-        line.addVertex(x, y);
-        line.addVertex(x + velocityX, y - velocityY);
-        line.draw();
-    }
+    ofCircle(position.x, position.y, size);
 
     // cleanum
     line.close();
@@ -119,61 +81,35 @@ void RepositoryNode::draw()
 void RepositoryNode::step()
 {
     // compute acceleration
-    float _last_positionX = x;
-    float _last_positionY = y;
-    float _accelerationX = 0;
-    float _accelerationY = 0;
-    accelerationX = 0;
-    accelerationY = 0;
+    Vector last_position = position;
+    Vector new_acceleration(0, 0);
+    acceleration.x = 0;
+    acceleration.y = 0;
+
     for (auto lw : language_weights) {
         LanguageNode *ln = lw.ln;
         float weight = lw.weight;
-        
-        float deltaX = ln->getX() - x;
-        float deltaY = -(ln->getY() - y);
-        float hypo = sqrt(deltaX * deltaX + deltaY * deltaY);
 
-        float theta = std::atan(std::abs(deltaY) / std::abs(deltaX));
-        // fix theta so that it is relative to the positive x-axis
-        if (deltaX < 0) {
-            if (deltaY < 0) {
-                theta = PI + theta;
-            } else {
-                theta = PI - theta;
-            }
-        } else {
-            if (deltaY < 0) {
-                theta = 2 * PI - theta;
-            }
-        }
-        float magnitude = (hypo - ln->getSize() - DISTANCE_FROM_OTHER_NODES) * weight;
-        _accelerationX = magnitude * std::cos(theta) - velocityX / 3;
-        _accelerationY = magnitude * std::sin(theta) - velocityY / 3;
+        float deltaX = ln->position.x - position.x;
+        float deltaY = -(ln->position.y - position.y); // invert since our axis are inverted
+        Vector towards_language(deltaX, deltaY);
 
-        if (DEBUG) {
-            ofPolyline line = ofPolyline();
-            // paint acceleration vector
-            ofSetColor(255, 0, 0);
-            line.addVertex(_last_positionX, _last_positionY);
-            _last_positionX = _last_positionX + _accelerationX;
-            _last_positionY = _last_positionY - _accelerationY;
-            line.addVertex(_last_positionX, _last_positionY);
-            line.draw();
-            line.close();
-            ofSetColor(255, 255, 255);
-        }
+        float magnitude = (towards_language.magnitude() - ln->size - DISTANCE_FROM_OTHER_NODES) * weight;
+        float theta = towards_language.normalizedAngle();
 
-        accelerationX += _accelerationX;
-        accelerationY += _accelerationY;
+        new_acceleration.x = magnitude * std::cos(theta) - velocity.x / 3;
+        new_acceleration.y = magnitude * std::sin(theta) - velocity.y / 3;
+
+        acceleration += new_acceleration;
     }
     
     // mutate velocity
-    velocityX += accelerationX / 5;
-    velocityY += accelerationY / 5;
+    velocity.x += acceleration.x / 5;
+    velocity.y += acceleration.y / 5;
 
     // mutate position
-    x += velocityX / 5;
-    y -= velocityY / 5;
+    position.x += velocity.x / 5;
+    position.y -= velocity.y / 5;
 }
 
 void RepositoryNode::addLanguageWeight(LanguageNode *ln, float weight)
@@ -190,11 +126,3 @@ float RepositoryNode::totalWeight()
     }
     return total;
 }
-
-std::string RepositoryNode::getName() const { return name; }
-float RepositoryNode::getX() const { return x; }
-float RepositoryNode::getY() const { return y; }
-float RepositoryNode::getVelocityX() const { return velocityX; }
-float RepositoryNode::getVelocityY() const { return velocityY; }
-float RepositoryNode::getAccelerationX() const { return accelerationX; }
-float RepositoryNode::getAccelerationY() const { return accelerationY; }

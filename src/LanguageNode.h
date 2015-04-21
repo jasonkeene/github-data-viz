@@ -1,9 +1,11 @@
 #ifndef githubDataViz_LanguageNode_h
 #define githubDataViz_LanguageNode_h
 
+#include <string>
+
 #include "ofMain.h"
 
-#include <string>
+#include "Vector.h"
 
 class LanguageNode {
 public:
@@ -13,21 +15,10 @@ public:
     bool inArea(float, float);
     bool hover;
 
-    void setPosition(float, float);
-    void setSize(float);
-    
-    std::string getName() const;
-    float getSize() const;
-    float getX() const;
-    float getY() const;
-    
-    ofColor color;
-
-private:
     std::string name;
+    ofColor color;
     float size;
-    float x;
-    float y;
+    Vector position;
 };
 
 #endif

@@ -57,11 +57,13 @@ void ofApp::mouseMoved(int x, int y) {
 }
 
 void ofApp::mouseDragged(int x, int y, int button) {
+    Vector mouse_position(x, y);
     if (dragged != NULL) {
-        dragged->setPosition(x, y);
+        dragged->position = mouse_position;
     }
     if (repoDragged != NULL) {
-        repoDragged->setPosition(x, y);
+
+        repoDragged->position = mouse_position;
     }
 }
 

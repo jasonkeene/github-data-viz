@@ -5,6 +5,7 @@
 #include <map>
 
 #include "LanguageNode.h"
+#include "Vector.h"
 
 typedef struct {
     LanguageNode* ln;
@@ -14,31 +15,20 @@ typedef struct {
 class RepositoryNode {
 public:
     RepositoryNode(std::string, float, float);
+
     void draw();
     void step();
+
     void addLanguageWeight(LanguageNode *, float);
     float totalWeight();
     bool inArea(float, float);
+
     bool hover;
-    
-    void setPosition(float, float);
-
-    std::string getName() const;
-    float getX() const;
-    float getY() const;
-    float getVelocityX() const;
-    float getVelocityY() const;
-    float getAccelerationX() const;
-    float getAccelerationY() const;
-
-private:
     std::string name;
-    float x;
-    float y;
-    float velocityX;
-    float velocityY;
-    float accelerationX;
-    float accelerationY;
+    Vector position;
+    Vector velocity;
+    Vector acceleration;
+    float size;
     std::vector<LanguageWeight> language_weights;
 };
 
