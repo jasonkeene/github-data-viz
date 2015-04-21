@@ -43,6 +43,10 @@ void RepositoryNode::draw()
 {
     ofPolyline line = ofPolyline();
     int count = 0;
+    if (hover) {
+        ofDrawBitmapStringHighlight(name, x + 10, y + count * 20);
+        count++;
+    }
     for (auto lw : language_weights) {
         line.clear();
         LanguageNode *ln = lw.ln;
@@ -50,7 +54,7 @@ void RepositoryNode::draw()
         if (ln->hover)
         {
             ofColor brighter = ln->color;
-            brighter.setBrightness(brighter.getBrightness() + 150);
+            brighter.setBrightness(brighter.getBrightness() + 75);
             ofSetColor(brighter);
         }
         line.addVertex(x, y);

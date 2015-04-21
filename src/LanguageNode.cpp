@@ -6,8 +6,7 @@
 LanguageNode::LanguageNode(string name, float x, float y, float size)
     : name(name), x(x), y(y), size(size) {
         color = ofColor(rand() % 170 + 50, rand() % 170 + 50, rand() % 170 + 50);
-        color.setSaturation(200);
-        //color.setBrightness(3000);
+        color.setSaturation(75);
 }
 
 void LanguageNode::draw()
@@ -20,11 +19,11 @@ void LanguageNode::draw()
     }
     ofCircle(x, y, size);
     //ofDrawBitmapString(name, x - 10, y);
-    if (hover) {
-        std::ostringstream s;
-        s << " %" << (getSize());
-        ofDrawBitmapString(s.str(), x - 20, y + getSize() + 15);
-    }
+//    if (hover) {
+//        std::ostringstream s;
+//        s << " %" << (getSize());
+//        ofDrawBitmapString(s.str(), x - 20, y + getSize() + 15);
+//    }
     ofSetColor(255,255,255);
     ofDrawBitmapString(name, x - name.length() * 4, y + 4);
 }
