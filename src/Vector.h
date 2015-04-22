@@ -1,4 +1,3 @@
-
 #ifndef githubDataViz_Vector_h
 #define githubDataViz_Vector_h
 
@@ -13,8 +12,17 @@ public:
     float angle() const;
     float normalizedAngle() const;
 
+    void setMagnitude(float);
+
     void operator+=(Vector);
     void operator-=(Vector);
+    void operator*=(float);
+    void operator/=(float);
+    Vector operator+(Vector);
+    Vector operator-(Vector);
+    Vector operator*(float);
+    Vector operator/(float);
+
 
     float x;
     float y;

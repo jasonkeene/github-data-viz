@@ -7,9 +7,9 @@
 
 Vector::Vector() : x(0), y(0) {}
 Vector::Vector(float x, float y) : x(x), y(y) {}
-Vector::Vector(float magnitide, float angle, bool flag) {
-    x = 1;
-    y = 1;
+Vector::Vector(float magnitude, float angle, bool flag) {
+    x = magnitude * std::cos(angle);
+    y = magnitude * std::sin(angle);
 }
 
 float Vector::magnitude() const
@@ -40,6 +40,13 @@ float Vector::normalizedAngle() const
     }
 }
 
+void Vector::setMagnitude(float magnitude)
+{
+    float theta = this->normalizedAngle();
+    x = magnitude * std::cos(theta);
+    y = magnitude * std::sin(theta);
+}
+
 void Vector::operator+=(Vector other)
 {
     x += other.x;
@@ -50,4 +57,42 @@ void Vector::operator-=(Vector other)
 {
     x -= other.x;
     y -= other.y;
+}
+
+void Vector::operator*=(float magnitude)
+{
+    this->setMagnitude(this->magnitude() * magnitude);
+}
+
+void Vector::operator/=(float magnitude)
+{
+    this->setMagnitude(this->magnitude() / magnitude);
+}
+
+Vector Vector::operator+(Vector other)
+{
+    Vector newV;
+    newV.x = x + other.x;
+    newV.y = y + other.y;
+    return newV;
+}
+
+Vector Vector::operator-(Vector other)
+{
+    Vector newV;
+    newV.x = x - other.x;
+    newV.y = y - other.y;
+    return newV;
+}
+
+Vector Vector::operator*(float magnitude)
+{
+    Vector newV(x * magnitude, y * magnitude);
+    return newV;
+}
+
+Vector Vector::operator/(float magnitude)
+{
+    Vector newV(x / magnitude, y / magnitude);
+    return newV;
 }

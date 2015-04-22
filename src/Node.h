@@ -8,6 +8,9 @@
 #include "Vector.h"
 
 
+const int DISTANCE_FROM_OTHER_NODES = 20;
+
+
 class Node
 {
 public:
@@ -20,13 +23,15 @@ public:
 
     virtual bool inArea(float, float);
 
-    bool hover;;
+    bool hover;
+    bool dragged;
     float size;
     std::string name;
     Vector position;
     Vector velocity;
     Vector acceleration;
     ofColor color;
+    void *graph;
 };
 
 #endif

@@ -4,7 +4,8 @@
 #include <string>
 #include <map>
 
-#include "Node.h"
+#include "ofMain.h"
+
 #include "LanguageNode.h"
 
 typedef struct {

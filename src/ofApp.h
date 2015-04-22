@@ -3,11 +3,11 @@
 
 #include "ofMain.h"
 
-class Graph;
 #ifndef githubDataViz_Graph_h
-#include "graph.h"
+class Graph;
 #endif
 
+#include "RepositoryNode.h"
 #include "LanguageNode.h"
 
 
@@ -26,14 +26,10 @@ public:
     void windowResized(int w, int h);
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
-    
-    RepositoryNode *getDragged();
-    RepositoryNode *getHovered();
 private:
-    Graph graph;
-    LanguageNode *dragged;
-    RepositoryNode *repoDragged;
-    RepositoryNode *hoveredNode;
+    Graph *graph;
 };
+
+#include "graph.h"
 
 #endif

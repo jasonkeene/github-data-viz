@@ -1,8 +1,6 @@
 #include "Vector.h"
 #include "RepositoryNode.h"
-
-
-const int DISTANCE_FROM_OTHER_NODES = 20;
+#include "Graph.h"
 
 
 RepositoryNode::RepositoryNode(string name, float x, float y, float size, ofColor color)
@@ -79,34 +77,39 @@ void RepositoryNode::step()
 {
     // compute acceleration
     Vector last_position = position;
-    Vector new_acceleration(0, 0);
     acceleration.x = 0;
     acceleration.y = 0;
 
+    // move towards language nodes
     for (auto lw : language_weights) {
         LanguageNode *ln = lw.ln;
         float weight = lw.weight;
 
-        float deltaX = ln->position.x - position.x;
-        float deltaY = -(ln->position.y - position.y); // invert since our axis are inverted
-        Vector towards_language(deltaX, deltaY);
-
+        Vector towards_language = ln->position - position;
         float magnitude = (towards_language.magnitude() - ln->size - DISTANCE_FROM_OTHER_NODES) * weight;
         float theta = towards_language.normalizedAngle();
 
-        new_acceleration.x = magnitude * std::cos(theta) - velocity.x / 3;
-        new_acceleration.y = magnitude * std::sin(theta) - velocity.y / 3;
+        Vector new_acceleration(magnitude, theta, true);
+        new_acceleration -= velocity / 3;
 
         acceleration += new_acceleration;
     }
-    
+
+    // move away from repo nodes
+    for (auto node : ((Graph *)graph)->getRepositoryNodes()) {
+        if (node == this) {
+            continue;
+        }
+        Vector goaway = position - node->position;
+        goaway.setMagnitude(1 / (goaway.magnitude() / 500));
+        acceleration += goaway;
+    }
+
     // mutate velocity
-    velocity.x += acceleration.x / 5;
-    velocity.y += acceleration.y / 5;
+    velocity += acceleration / 5;
 
     // mutate position
-    position.x += velocity.x / 5;
-    position.y -= velocity.y / 5;
+    position += velocity / 5;
 }
 
 void RepositoryNode::addLanguageWeight(LanguageNode *ln, float weight)

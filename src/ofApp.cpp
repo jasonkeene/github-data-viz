@@ -15,12 +15,7 @@ void ofApp::setup() {
     graph = Graph::buildProductionGraph();
 
     // backref to app
-    graph.setApp(this);
-
-    // initialize pointers
-    dragged = NULL;
-    repoDragged = NULL;
-    hoveredNode = NULL;
+    graph->setApp(this);
 }
 
 void ofApp::update() {}
@@ -30,8 +25,8 @@ void ofApp::draw() {
     ofBackgroundGradient(ofColor(64), ofColor(0));
 
     // draw graph
-    graph.draw();
-    graph.step();
+    graph->draw();
+    graph->step();
 }
 
 void ofApp::keyPressed(int key) {}
@@ -39,70 +34,69 @@ void ofApp::keyPressed(int key) {}
 void ofApp::keyReleased(int key) {}
 
 void ofApp::mouseMoved(int x, int y) {
-    for (auto rn : graph.getRepositoryNodes()) {
+    // set center gravity
+    if (x < 10) {
+        graph->center = false;
+    } else if (x > ofGetWindowWidth() - 10) {
+        graph->center = true;
+    }
+
+    for (auto rn : graph->getRepositoryNodes()) {
         if (rn->inArea(x, y)) {
             rn->hover = true;
-            hoveredNode = rn;
         }
         else {
             rn->hover = false;
         }
     }
 
-    for (auto ln : graph.getLanguageNodes()) {
+    for (auto ln : graph->getLanguageNodes()) {
         ln->hover = ln->inArea(x, y);
-        // TODO: make this polymorphic
-        //hoveredNode = rn;
     }
 }
 
 void ofApp::mouseDragged(int x, int y, int button) {
     Vector mouse_position(x, y);
-    if (dragged != NULL) {
-        dragged->position = mouse_position;
+    for (auto ln : graph->getLanguageNodes()) {
+        if (ln->dragged) {
+            ln->position = mouse_position;
+            return;
+        }
     }
-    if (repoDragged != NULL) {
-
-        repoDragged->position = mouse_position;
+    for (auto rn: graph->getRepositoryNodes()) {
+        if (rn->dragged) {
+            rn->position = mouse_position;
+            return;
+        }
     }
 }
 
 void ofApp::mousePressed(int x, int y, int button) {
-    std::vector<LanguageNode *> language_nodes = graph.getLanguageNodes();
-    for (auto ln : language_nodes) {
+    for (auto ln : graph->getLanguageNodes()) {
         if (ln->inArea(x, y)) {
-            dragged = ln;
+            ln->dragged = true;
+            return;
         }
     }
-    std::vector<RepositoryNode *> repository_nodes = graph.getRepositoryNodes(); //*******
-    for (auto rn: repository_nodes) {
+    for (auto rn: graph->getRepositoryNodes()) {
         if (rn->inArea(x, y)) {
-            repoDragged = rn;
+            rn->dragged = true;
+            return;
         }
     }
 }
 
 void ofApp::mouseReleased(int x, int y, int button) {
-    dragged = NULL;
-    repoDragged = NULL;
-    hoveredNode = NULL;
-    for (auto rn : graph.getRepositoryNodes()) {
-        rn->hover = false;
+    for (auto ln : graph->getLanguageNodes()) {
+        ln->dragged = false;
+    }
+    for (auto rn : graph->getRepositoryNodes()) {
+        rn->dragged = false;
     }
 }
 
 void ofApp::windowResized(int w, int h) {}
 
 void ofApp::gotMessage(ofMessage msg) {}
-
-RepositoryNode *ofApp::getDragged()
-{
-    return repoDragged;
-}
-
-RepositoryNode *ofApp::getHovered()
-{
-    return hoveredNode;
-}
 
 void ofApp::dragEvent(ofDragInfo dragInfo) {}

@@ -4,9 +4,9 @@
 #include "LanguageNode.h"
 
 
-Graph Graph::buildRandomGraph()
+Graph *Graph::buildRandomGraph()
 {
-    Graph graph;
+    Graph *graph = new Graph();
 
     // create mock language nodes
     vector<LanguageNode *> mock_languages;
@@ -53,19 +53,19 @@ Graph Graph::buildRandomGraph()
             test_rn->addLanguageWeight(lang, float(percent) / 100.0);
             remaining_percent -= percent;
         }
-        graph.addRepositoryNode(test_rn);
+        graph->addRepositoryNode(test_rn);
     }
 
     // build graph
     for (auto ln : mock_languages) {
-        graph.addLanguageNode(ln);
+        graph->addLanguageNode(ln);
     }
     return graph;
 }
 
-Graph Graph::buildSimpleGraph()
+Graph *Graph::buildSimpleGraph()
 {
-    Graph graph;
+    Graph *graph = new Graph();
 
     // create mock language nodes
     vector<LanguageNode *> mock_languages;
@@ -79,15 +79,15 @@ Graph Graph::buildSimpleGraph()
 
     // build graph
     for (auto ln : mock_languages) {
-        graph.addLanguageNode(ln);
+        graph->addLanguageNode(ln);
     }
-    graph.addRepositoryNode(test_rn);
+    graph->addRepositoryNode(test_rn);
     return graph;
 }
 
-Graph Graph::buildProductionGraph()
+Graph *Graph::buildProductionGraph()
 {
-    Graph graph;
+    Graph *graph = new Graph();
 
     // read in prod data
     ofBuffer buffer = ofBufferFromFile(ofToDataPath("language_stats.txt"));
@@ -156,14 +156,14 @@ Graph Graph::buildProductionGraph()
     // build graph
     //graph.addRepositoryNode(ln);
     for (auto rn : repositories) {
-        graph.addRepositoryNode(rn);
+        graph->addRepositoryNode(rn);
     }
     for (auto lnt : languages) {
         auto ln = lnt.second;
         if (ln->size < 10) {
             ln->size = 10;
         }
-        graph.addLanguageNode(ln);
+        graph->addLanguageNode(ln);
     }
     return graph;
 }
@@ -171,11 +171,13 @@ Graph Graph::buildProductionGraph()
 void Graph::addRepositoryNode(RepositoryNode *rn)
 {
     repository_nodes.push_back(rn);
+    rn->graph = this;
 }
 
 void Graph::addLanguageNode(LanguageNode *ln)
 {
     language_nodes.push_back(ln);
+    ln->graph = this;
 }
 
 void Graph::draw()
@@ -189,20 +191,24 @@ void Graph::draw()
         ln->draw();
     }
     // redrawn hover repo nodes
-    if (app->getHovered() != NULL) {
-        app->getHovered()->draw();
+    for (auto rn : repository_nodes) {
+        if (rn->hover) {
+            rn->draw();
+        }
     }
 }
 
 void Graph::step()
 {
     for (auto rn : repository_nodes) {
-        if (app->getDragged() == NULL || app->getDragged()->name != rn->name) {
+        if (!rn->dragged) {
             rn->step();
         }
     }
     for (auto ln : language_nodes) {
-        ln->step();
+        if (!ln->dragged) {
+            ln->step();
+        }
     }
 }
 
@@ -214,6 +220,32 @@ void Graph::setApp(ofApp *a)
 ofApp *Graph::getApp()
 {
     return app;
+}
+
+std::vector<Node *> Graph::getNodesNearMe(Node *subject) const
+{
+    std::vector<Node *> nodes;
+    for (auto node : language_nodes) {
+        if (
+            node->inArea(subject->position.x + subject->size + DISTANCE_FROM_OTHER_NODES, subject->position.y + subject->size + DISTANCE_FROM_OTHER_NODES) ||
+            node->inArea(subject->position.x + subject->size + DISTANCE_FROM_OTHER_NODES, subject->position.y - subject->size - DISTANCE_FROM_OTHER_NODES) ||
+            node->inArea(subject->position.x - subject->size - DISTANCE_FROM_OTHER_NODES, subject->position.y + subject->size + DISTANCE_FROM_OTHER_NODES) ||
+            node->inArea(subject->position.x - subject->size - DISTANCE_FROM_OTHER_NODES, subject->position.y - subject->size - DISTANCE_FROM_OTHER_NODES)
+            ) {
+            nodes.push_back(node);
+        }
+    }
+    for (auto node : repository_nodes) {
+        if (
+            node->inArea(subject->position.x + subject->size + DISTANCE_FROM_OTHER_NODES, subject->position.y + subject->size + DISTANCE_FROM_OTHER_NODES) ||
+            node->inArea(subject->position.x + subject->size + DISTANCE_FROM_OTHER_NODES, subject->position.y - subject->size - DISTANCE_FROM_OTHER_NODES) ||
+            node->inArea(subject->position.x - subject->size - DISTANCE_FROM_OTHER_NODES, subject->position.y + subject->size + DISTANCE_FROM_OTHER_NODES) ||
+            node->inArea(subject->position.x - subject->size - DISTANCE_FROM_OTHER_NODES, subject->position.y - subject->size - DISTANCE_FROM_OTHER_NODES)
+            ) {
+            nodes.push_back(node);
+        }
+    }
+    return nodes;
 }
 
 std::vector<LanguageNode *> Graph::getLanguageNodes() const { return language_nodes; };
