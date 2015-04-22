@@ -23,12 +23,14 @@ You can also issue this command to build and launch the app:
 
 # Windows
 
-Make sure to have Code::Blocks and openFrameowrks installed. You can download
-openFrameworks [here](http://www.openframeworks.cc/versions/v0.8.4/of_v0.8.4_win_cb_release.zip)
-and then follow the instructions [here](http://openframeworks.cc/setup/codeblocks/).
+In order to properly run this program, you will need to download Code::Blocks, openFrameworks 
+and the codeblocks library addittions. You can download openFrameworks [here] 
+(http://www.openframeworks.cc/versions/v0.8.4/of_v0.8.4_win_cb_release.zip) and then follow the 
+instructions [here](http://openframeworks.cc/setup/codeblocks/).
 
-Clone down the repo into your apps directory. From here you can launch the
-Code::Blocks workspace. You may need to enable C++11 under your build options.
+Once you have completed these steps, clone down the repo into your MyApps directory that is 
+located inside your openFrameworks folder (e.g. Local Disk(C:) > Program Files > openFrameworks > apps > myApps). From here you can launch the Code::Blocks workspace File and build the project (it may take a while). You might need to enable C++11 under your build options.
+
 
 # Linux
 
