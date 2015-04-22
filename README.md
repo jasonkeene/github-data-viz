@@ -29,9 +29,7 @@ and the codeblocks library addittions. You can download openFrameworks [here]
 instructions [here](http://openframeworks.cc/setup/codeblocks/).
 
 Once you have completed these steps, clone down the repo into your MyApps directory that is 
-located inside your openFrameworks folder (e.g. Local Disk(C:) > Program Files > openFrameworks 
-> apps > myApps). From here you can launch the Code::Blocks workspace File and build the project 
-(it may take a while). You might need to enable C++11 under your build options.
+located inside your openFrameworks folder (e.g. Local Disk(C:) > Program Files > openFrameworks > apps > myApps). From here you can launch the Code::Blocks workspace File and build the project (it may take a while). You might need to enable C++11 under your build options.
 
 
 # Linux
