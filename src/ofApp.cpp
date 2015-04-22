@@ -40,6 +40,15 @@ void ofApp::mouseMoved(int x, int y) {
     } else if (x > ofGetWindowWidth() - 10) {
         graph->center = true;
     }
+    if (y < 10) {
+    } else if (y > ofGetWindowHeight() - 10) {
+        for (auto ln : graph->getLanguageNodes()) {
+            ln->pinned = false;
+        }
+        for (auto rn : graph->getRepositoryNodes()) {
+            rn->pinned = false;
+        }
+    }
 
     for (auto rn : graph->getRepositoryNodes()) {
         if (rn->inArea(x, y)) {
@@ -58,13 +67,13 @@ void ofApp::mouseMoved(int x, int y) {
 void ofApp::mouseDragged(int x, int y, int button) {
     Vector mouse_position(x, y);
     for (auto ln : graph->getLanguageNodes()) {
-        if (ln->dragged) {
+        if (ln->dragged && !ln->pinned) {
             ln->position = mouse_position;
             return;
         }
     }
     for (auto rn: graph->getRepositoryNodes()) {
-        if (rn->dragged) {
+        if (rn->dragged && !rn->pinned) {
             rn->position = mouse_position;
             return;
         }
@@ -75,12 +84,14 @@ void ofApp::mousePressed(int x, int y, int button) {
     for (auto ln : graph->getLanguageNodes()) {
         if (ln->inArea(x, y)) {
             ln->dragged = true;
+            ln->pinned = false;
             return;
         }
     }
     for (auto rn: graph->getRepositoryNodes()) {
         if (rn->inArea(x, y)) {
             rn->dragged = true;
+            rn->pinned = false;
             return;
         }
     }
@@ -88,10 +99,18 @@ void ofApp::mousePressed(int x, int y, int button) {
 
 void ofApp::mouseReleased(int x, int y, int button) {
     for (auto ln : graph->getLanguageNodes()) {
-        ln->dragged = false;
+        if (ln->dragged) {
+            ln->dragged = false;
+            ln->pinned = true;
+            return;
+        }
     }
     for (auto rn : graph->getRepositoryNodes()) {
-        rn->dragged = false;
+        if (rn->dragged) {
+            rn->dragged = false;
+            rn->pinned = true;
+            return;
+        }
     }
 }
 

@@ -201,12 +201,12 @@ void Graph::draw()
 void Graph::step()
 {
     for (auto rn : repository_nodes) {
-        if (!rn->dragged) {
+        if (!rn->dragged && !rn->pinned) {
             rn->step();
         }
     }
     for (auto ln : language_nodes) {
-        if (!ln->dragged) {
+        if (!ln->dragged && !ln->pinned) {
             ln->step();
         }
     }

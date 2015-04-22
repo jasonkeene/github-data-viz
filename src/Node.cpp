@@ -10,16 +10,16 @@ ofColor generateRandomColor()
 
 
 Node::Node(string name, float x, float y, float size, ofColor color)
-    : name(name), position(x, y), size(size), color(color), graph(NULL) {}
+    : name(name), position(x, y), size(size), color(color), graph(NULL), hover(false), dragged(false), pinned(false) {}
 
 Node::Node(string name, float x, float y, float size)
-    : name(name), position(x, y), size(size), graph(NULL)
+    : name(name), position(x, y), size(size), graph(NULL), hover(false), dragged(false), pinned(false)
 {
     color = generateRandomColor();
 }
 
 Node::Node(string name, float x, float y)
-    : name(name), position(x, y), size(4), graph(NULL)
+    : name(name), position(x, y), size(4), graph(NULL), hover(false), dragged(false), pinned(false)
 {
     color = generateRandomColor();
 }

@@ -25,6 +25,7 @@ public:
 
     bool hover;
     bool dragged;
+    bool pinned;
     float size;
     std::string name;
     Vector position;
