@@ -1,7 +1,9 @@
 
+<a href="https://vimeo.com/172997666" target="_blank"><img src="tbd" /></a>
+
 ## Getting Started
 
-# Mac OSX
+### Mac OSX
 
 Make sure to have Xcode and openFrameowrks installed. You can download
 openFrameworks [here](http://www.openframeworks.cc/versions/v0.8.4/of_v0.8.4_osx_release.zip)
@@ -21,7 +23,7 @@ You can also issue this command to build and launch the app:
 
     xcodebuild && open bin/githubDataViz.app
 
-# Windows
+### Windows
 
 In order to properly run this program, you will need to download Code::Blocks, openFrameworks 
 and the codeblocks library addittions. You can download openFrameworks [here] 
@@ -32,6 +34,6 @@ Once you have completed these steps, clone down the repo into your MyApps direct
 located inside your openFrameworks folder (e.g. Local Disk(C:) > Program Files > openFrameworks > apps > myApps). From here you can launch the Code::Blocks workspace File and build the project (it may take a while). You might need to enable C++11 under your build options.
 
 
-# Linux
+### Linux
 
 Follow the guide on [openframework's site](http://openframeworks.cc/setup/linux-codeblocks/)
