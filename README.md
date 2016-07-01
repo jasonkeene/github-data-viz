@@ -1,5 +1,5 @@
 
-<a href="https://vimeo.com/172997666" target="_blank"><img src="tbd" /></a>
+<a href="https://vimeo.com/172997666" target="_blank"><img src="https://raw.githubusercontent.com/jasonkeene/github-data-viz/master/github-data-viz.png" /></a>
 
 ## Getting Started
 
